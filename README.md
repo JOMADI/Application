@@ -24,6 +24,8 @@ java -jar application.jar input.txt ID 54808168L
 ```
 The above must output an unordered unrepeated list of cities that Shelley Payne have been to.
 
+![Screenshot](application_screen_shot.png)
+
 In advent of a command like this:
 
 ```bash
