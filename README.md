@@ -59,7 +59,8 @@ java -jar /Application/target/Application.jar
 The input.txt file is also in this directory and has over 1500 line of text.
 
 ## CONTRIBUTIONS
-Many Thanks to VICBOB ("He never said his full name") for giving insight on how to handle the ID's for format two so it points to the same user.
+Many thanks to VICBOB ("He never said his full name") for giving insight on how to handle the ID's for F2 so it points to the same user.
+
 Thanks also to TEMITOPE AKINTILEBO for his insight on the proper datastructure to use.
 
 ## AUTHOR
