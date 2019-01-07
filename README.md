@@ -9,6 +9,7 @@ in the advent of a file structure change, the regex will need to be change to th
 ## USAGE
 
 The two supported command are as follows
+
 -java -jar application.jar {FILE} CITY {CITY_NAME}
 
 -java -jar application.jar {FILE} ID {ID_VALUE}
@@ -23,7 +24,15 @@ java -jar application.jar input.txt ID 54808168L
 ```
 The above must output an unordered unrepeated list of cities that Shelley Payne have been to.
 
+In advent of a command like this:
+
+```bash
+java -jar application.jar input.txt ID 54808168-L
+```
+The program has been designed to handle the F2 ID format.
+
 The program has been made to abstract most of its complexities.
+
 This executes the program
 
 ```java
