@@ -54,9 +54,9 @@ The program is expected to be tested with gigabytes of datafile, an initial capa
 The Application.jar file can be found in the
 
 ```bash
-java -jar /IdeaProjects/Application/target/Application.jar
+java -jar /Application/target/Application.jar
 ```
-The input.txt file is also in this directory.
+The input.txt file is also in this directory and has over 1500 line of text.
 
 ## CONTRIBUTIONS
 Many Thanks to VICBOB ("He never said his full name") for giving insight on how to handle the ID's for format two so it points to the same user.
