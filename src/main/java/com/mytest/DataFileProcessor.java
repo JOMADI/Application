@@ -46,42 +46,72 @@ public class DataFileProcessor {
 
         setDataFile(dataFile);
     }
-
+    /* 
+    *Sets the arguments for processing the file and producing the required output
+    */
     static DataFileProcessor setProcessingParameters(@NotNull final String dataFile, @NotNull final String parameter_1, @NotNull final String parameter_2){
         dataFileProcessor = new DataFileProcessor(dataFile, parameter_1, parameter_2);
         return dataFileProcessor;
 
     }
-
+    
+    /*
+    * Gets the dataFileProcessor instance to enable it call a public member method,
+    * giving it a functional programming style feel.
+    */
     private static DataFileProcessor getDataFileProcessor() {
         return dataFileProcessor;
     }
-
-    String getDataFile() {
+    
+    /*
+    *gets the value for datafile which is to be processed
+    * although its private, this is left here incase it might be useful
+    */
+    private String getDataFile() {
         return dataFile;
     }
-
+    
+    /*
+    *Sets the value for input data file to be processed
+    */
     private void setDataFile(final String dataFile) {
         this.dataFile = dataFile;
     }
-
+    
+     /*
+    *gets the value for parameter 1 which is the search key
+    * although its private, this is left here incase it might be useful
+    */
     private String getParameter_1() {
         return parameter_1;
     }
-
+    
+     /*
+    *Sets the value for parameter 1 which is the operation type
+    */
     private void setParameter_1(final String parameter_1) {
         this.parameter_1 = parameter_1;
     }
-
+    
+    /*
+    *gets the value for parameter 2 which is the search key
+    * although its private, this is left here incase it might be useful
+    */
     private String getParameter_2() {
         return parameter_2;
     }
-
+    
+    /*
+    *Sets the value for parameter 2 which is the search key
+    */
     private void setParameter_2(final String parameter_2) {
         this.parameter_2 = parameter_2;
     }
-
-    DataFileProcessor processDataFile(){
+    
+    /*
+    *processes the data file line by line based on the last seen format line
+    */
+    private DataFileProcessor processDataFile(){
 
         try(BufferedReader input = new BufferedReader(new FileReader(getDataFile()))){
             String userLine;
@@ -106,8 +136,11 @@ public class DataFileProcessor {
 
         return getDataFileProcessor();
     }
-
-    public   String[] matchDataPattern(final Pattern regex, final String userLine){
+    
+    /*
+    * scans each line of data for a match based on the given regex
+    */
+    public String[] matchDataPattern(final Pattern regex, final String userLine){
         Matcher matcher = regex.matcher(userLine);
         String[] data = new String[3]; //data[0] - user's name
         int counter = 0;               //data[1] - city name
@@ -116,18 +149,27 @@ public class DataFileProcessor {
         }
         return data;
     }
-
+    
+    /*
+    * processes the data for format one (F1)
+    */
     private void processFormatOneData(final String userLine) {
         String[] data = matchDataPattern(FORMAT_ONE_REGEX, userLine);
         addUserToMap(data);
     }
-
+    
+    /*
+    * processes the data for format two (F2)
+    */
     private void processFormatTwoData(final String userLine) {
         String[] data = matchDataPattern(FORMAT_TWO_REGEX, userLine);
         data[2] = String.join("", data[2].split("-"));
         addUserToMap(data);
     }
-
+    
+    /*
+    * Adds each user to the map for retrieval
+    */
     private void addUserToMap(final String[] data){
         User user = User.addUserData(data[0], data[1], data[2]);
 
@@ -140,8 +182,11 @@ public class DataFileProcessor {
             processedUserData.put(user.getUserId(), user);
         }
     }
-
-    void getOutputData(){
+    
+    /*
+    * Gets the output data based on the given parameters
+    */
+    private void getOutputData(){
         if(getParameter_1().equals(CITY)){
             processedUserData.values()
                     .stream()
