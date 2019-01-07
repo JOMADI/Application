@@ -3,8 +3,8 @@
 This is a file processing program.
 The data is structured to a particular format.
 
-A Regular Expression Pattern was used to get the required data from the D-line
-in the advent of a file structure change, the regex will need to be change to that particular file structure.
+A Regular Expression Pattern was used to get the required data from the D-line.
+In the advent of a file structure change, the regex will need to be change to that particular file structure.
 
 ## USAGE
 
@@ -60,7 +60,7 @@ java -jar /Application/target/Application.jar
 ```
 The input.txt file is also in this directory and has over 1500 line of text.
 
-## CONTRIBUTIONS
+## CONTRIBUTORS
 Many thanks to VICBOB ("He never said his full name") for giving insight on how to handle the ID's for F2 so it points to the same user.
 
 Thanks also to TEMITOPE AKINTILEBO for his insight on the proper datastructure to use.
