@@ -132,6 +132,7 @@ public class DataFileProcessor {
             }
         }catch (IOException | NullPointerException e){
             System.err.println("An Error Occured Processing the file, Exiting Program...");
+            System.exit(0);
         }
 
         return getDataFileProcessor();
