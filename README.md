@@ -10,6 +10,7 @@ in the advent of a file structure change, the regex will need to be change to th
 
 The two supported command are as follows
 -java -jar application.jar {FILE} CITY {CITY_NAME}
+
 -java -jar application.jar {FILE} ID {ID_VALUE}
 
 ```bash
