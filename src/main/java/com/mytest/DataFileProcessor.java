@@ -131,7 +131,7 @@ public class DataFileProcessor {
                     processFormatTwoData(userLine);
             }
         }catch (IOException | NullPointerException e){
-            System.err.println("File Not Found, Exiting Program...");
+            System.err.println("An Error Occured Processing the file, Exiting Program...");
         }
 
         return getDataFileProcessor();
