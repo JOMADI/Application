@@ -37,12 +37,12 @@ public class DataFileProcessor {
     private DataFileProcessor(@NotNull final String dataFile, @NotNull final String parameter_1, @NotNull final String parameter_2){
         processedUserData = new HashMap<>(40);
 
-        setParameter_1(parameter_1);
+        setParameter_1(parameter_1.toUpperCase());
 
         if(parameter_1.equals(ID) && parameter_2.length() != ID_LENGTH)
-            setParameter_2(String.join("", parameter_2.split("-")));
+            setParameter_2(String.join("", parameter_2.split("-")).toUpperCase());
         else
-            setParameter_2(parameter_2);
+            setParameter_2(parameter_2.toUpperCase());
 
         setDataFile(dataFile);
     }
