@@ -1,10 +1,8 @@
 # JAVA TECHNICAL TEST
 
-This is a file processing program.
+This is a simple file processing program.   
 The data is structured to a particular format.
 
-A Regular Expression Pattern was used to get the required data from the D-line.
-In the advent of a file structure change, the regex will need to be change to that particular file structure.
 
 ## USAGE
 
@@ -47,16 +45,14 @@ This executes the program
 
 ## OTHER
 
-The program provides one test case, for which the data matched by the regex is correct.
-
-The program is expected to be tested with gigabytes of datafile, an initial capacity of 100 was given to the TreeMap<String, User>().
+The program is expected to be tested with gigabytes of datafile, an initial capacity of 50 was given to the HashMap<String, User>().
 
 The Application.jar file can be found in the
 
 ```bash
 java -jar /Application/out/artifacts/Application_jar/Application.jar
 ```
-A 1.7GB file was used to test this program which completed execution at 31.9s.
+A 3.3GB file was used to test this program which completed execution at ~ 28s.
 
 ## AUTHOR
 JO-AMADI VICTOR N.  

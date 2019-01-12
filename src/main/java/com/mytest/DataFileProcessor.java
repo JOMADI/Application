@@ -2,20 +2,14 @@ package com.mytest;
 
 import com.sun.istack.internal.NotNull;
 
-import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.channels.SeekableByteChannel;
-import java.nio.charset.Charset;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class DataFileProcessor {
@@ -42,7 +36,7 @@ public class DataFileProcessor {
     }
 
     private DataFileProcessor(@NotNull final String dataFile, @NotNull final String parameter_1, @NotNull final String parameter_2){
-        processedUserData = new TreeMap<>();
+        processedUserData = new HashMap<>(50);
 
         setParameter_1(parameter_1.toUpperCase());
 
@@ -128,18 +122,15 @@ public class DataFileProcessor {
 
                 format = userLine.equals(FORMAT_ONE) ? FORMAT_ONE : userLine.equals(FORMAT_TWO) ? FORMAT_TWO : format;
 
-                if(!userLine.equals(format)) {
-                    //System.out.println(userLine);
-                   processData(userLine, format);
-                }
+                if(!userLine.equals(format))
+                    processData(userLine, format);
             }
         }catch (IOException e){
-            e.printStackTrace();
+            //e.printStackTrace();
             System.err.println("An Error occurred processing the file, Exiting Program...");
             System.exit(0);
         }
 
-       // processedUserData.forEach((s, user) -> System.out.format("%s %s%n", s, user));
         return getDataFileProcessor();
     }
 
@@ -150,42 +141,10 @@ public class DataFileProcessor {
             lines.forEach(userLine ->{
                 format[0] = userLine.equals(FORMAT_ONE) ? FORMAT_ONE : userLine.equals(FORMAT_TWO) ? FORMAT_TWO : format[0];
 
-                if(!userLine.equals(format[0])) {
-                    //System.out.println(userLine);
+                if(!userLine.equals(format[0]))
                     processData(userLine, format[0]);
-                }
             });
 
-//            byte [] fileBytes = Files.readAllBytes(file.toPath());
-//            char singleChar;
-//            StringBuilder builder = new StringBuilder();
-//            String format = "";
-//            for(byte b : fileBytes) {
-//                singleChar = (char) b;
-//                if(singleChar == '\n' || singleChar == '\r'){
-//                  //  out.printf("Content: %s%n", builder.toString());
-//                    String userLine = builder.toString();
-//                    if(userLine.equals(FORMAT_ONE)) {
-//                        format = FORMAT_ONE;
-//                      //  System.out.println(format);
-//                    }
-//
-//                    if(userLine.equals(FORMAT_TWO)) {
-//                        format = FORMAT_TWO;
-//                       // System.out.println(format);
-//                    }
-//
-//                    if(!userLine.equals(format)) {
-//                       // System.out.println(userLine);
-//                        processData(userLine, format);
-//                    }
-//
-//                    builder = new StringBuilder();
-//                }else{
-//                    builder.append(singleChar);
-//                }
-//                //System.out.print(singleChar);
-//            }
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -204,11 +163,10 @@ public class DataFileProcessor {
 
         if(format.equals(FORMAT_TWO)) {
             data = userLine.split(";");
-            data[2] = data[2].replace("-", "");
+            data[1] = data[1].trim(); //remove whitespace in front and behind city name so it stands uniquely
+            data[2] = new StringBuilder(data[2].trim()).deleteCharAt(ID_LENGTH - 1).toString(); //removing '-' in F2 ID's
         }
-
-        data[0] = data[0].replaceFirst("D ", "");
-
+        data[0] = data[0].substring(2);//removing 'D ' in front of all data lines
 
         addUserToMap(data);
     }
@@ -221,7 +179,7 @@ public class DataFileProcessor {
         if(processedUserData.containsKey(data[2]))
             processedUserData.get(data[2]).addUserCity(data[1]);
         else
-            processedUserData.put(data[2], User.addUserData(data[0], data[1], data[2]));
+            processedUserData.put(data[2], User.addUserData(data[0].trim(), data[1], data[2]));
 
     }
 
@@ -232,11 +190,10 @@ public class DataFileProcessor {
         if(getParameter_1().equals(CITY)){
 
             processedUserData.values()
-                    .stream()
-                    .filter(user -> user.getUserCities()
-                            .contains(getParameter_2()))
-                    .forEach(user -> System.out.format("%s,%s%n",
-                            user.getUserName(), user.getUserId()));
+                    .forEach(user ->{
+                        if(user.getUserCities().contains(getParameter_2()))
+                            System.out.format("%s,%s%n", user.getUserName(), user.getUserId());
+                    });
         }
 
         if(getParameter_1().equals(ID)){

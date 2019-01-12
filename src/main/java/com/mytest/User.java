@@ -9,10 +9,11 @@ public class User {
 
     private String userId;
     private String userName;
-    private Set<String> userCity = new HashSet<>();
+    private Set<String> userCity;
 
 
     private User(@NotNull final String userName, @NotNull final String userCity, @NotNull final String userId){
+        this.userCity = new HashSet<>();
         setUserId(userId);
         setUserName(userName);
         addUserCity(userCity);
