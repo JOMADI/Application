@@ -11,7 +11,7 @@ The two supported command are as follows
 `java -jar application.jar {FILE} ID {ID_VALUE}`
 
 ```bash
-java -jar application.jar input.txt CITY LONDON
+java -jar application.jar input.txt CITY BARCELONA
 ```
 The above must output an unordered unrepeated list of people and IDs that have been to LONDON.
 
