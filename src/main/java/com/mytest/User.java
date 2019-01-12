@@ -2,9 +2,7 @@ package com.mytest;
 
 import com.sun.istack.internal.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class User {
@@ -24,6 +22,16 @@ public class User {
         return new User(userName, userCity, userId);
     }
 
+    @Override
+    public int hashCode() {
+        return userId.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        User u = (User) obj;
+        return this.userId.equals(u.userId);
+    }
 
     public String getUserId() {
         return userId;

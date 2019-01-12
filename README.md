@@ -8,11 +8,9 @@ In the advent of a file structure change, the regex will need to be change to th
 
 ## USAGE
 
-The two supported command are as follows
-
--java -jar application.jar {FILE} CITY {CITY_NAME}
-
--java -jar application.jar {FILE} ID {ID_VALUE}
+The two supported command are as follows    
+`java -jar application.jar {FILE} CITY {CITY_NAME}`    
+`java -jar application.jar {FILE} ID {ID_VALUE}`
 
 ```bash
 java -jar application.jar input.txt CITY LONDON
@@ -51,19 +49,15 @@ This executes the program
 
 The program provides one test case, for which the data matched by the regex is correct.
 
-The program is expected to be tested with gigabytes of datafile, an initial capacity of 40 was given to the HashMap<String, User>().
+The program is expected to be tested with gigabytes of datafile, an initial capacity of 100 was given to the TreeMap<String, User>().
 
 The Application.jar file can be found in the
 
 ```bash
-java -jar /Application/target/Application.jar
+java -jar /Application/out/artifacts/Application_jar/Application.jar
 ```
-The input.txt file is also in this directory and has over 1500 line of text.
-
-## CONTRIBUTORS
-Many thanks to VICBOB ("He never said his full name") for giving insight on how to handle the ID's for F2 so it points to the same user.
-
-Thanks also to TEMITOPE AKINTILEBO for his insight on the proper datastructure to use.
+A 1.7GB file was used to test this program which completed execution at 31.9s.
 
 ## AUTHOR
-JO-AMADI VICTOR N.
+JO-AMADI VICTOR N.  
+victorjo603@gmail.com
