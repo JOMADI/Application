@@ -8,8 +8,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class DataFileProcessor {
@@ -29,6 +28,10 @@ public class DataFileProcessor {
 
     private Map<String, User> processedUserData;
 
+    private Set<String> userIDDetails; //Cities
+
+    private Map<String, String> userCityDetails; //k - ID v- UserName
+
     private static DataFileProcessor dataFileProcessor;
 
     public DataFileProcessor(){
@@ -36,8 +39,9 @@ public class DataFileProcessor {
     }
 
     private DataFileProcessor(@NotNull final String dataFile, @NotNull final String parameter_1, @NotNull final String parameter_2){
-        processedUserData = new HashMap<>(50);
-
+       // processedUserData = new HashMap<>(50);
+        userIDDetails = new TreeSet<>();
+        userCityDetails = new TreeMap<>();
         setParameter_1(parameter_1.toUpperCase());
 
         if(parameter_1.equals(ID) && parameter_2.length() != ID_LENGTH)
@@ -130,26 +134,9 @@ public class DataFileProcessor {
             System.err.println("An Error occurred processing the file, Exiting Program...");
             System.exit(0);
         }
-
         return getDataFileProcessor();
     }
 
-    DataFileProcessor processDataFileFast(){
-        File file = new File(getDataFile());
-        try(Stream<String> lines = Files.lines(file.toPath(), StandardCharsets.UTF_8)){
-            final String[] format = {""};
-            lines.forEach(userLine ->{
-                format[0] = userLine.equals(FORMAT_ONE) ? FORMAT_ONE : userLine.equals(FORMAT_TWO) ? FORMAT_TWO : format[0];
-
-                if(!userLine.equals(format[0]))
-                    processData(userLine, format[0]);
-            });
-
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        return getDataFileProcessor();
-    }
 
     /*
      * processes the data for format one (F1) and format two (F2)
@@ -157,9 +144,8 @@ public class DataFileProcessor {
     private void processData(final String userLine, final String format) {
         String[] data = new String[0];
 
-        if(format.equals(FORMAT_ONE)) {
+        if(format.equals(FORMAT_ONE))
             data = userLine.split(",");
-        }
 
         if(format.equals(FORMAT_TWO)) {
             data = userLine.split(";");
@@ -168,39 +154,70 @@ public class DataFileProcessor {
         }
         data[0] = data[0].substring(2);//removing 'D ' in front of all data lines
 
-        addUserToMap(data);
+        if(getParameter_1().equals(ID))
+            processForID(data);
+
+        if(getParameter_1().equals(CITY))
+            processForCity(data);
+
     }
+
+    /*
+    *   Process D -Line for parameter ID
+     */
+    private void processForID(String[] data){
+        if(data[2].equals(getParameter_2()))//For Id's
+            userIDDetails.add(data[1]);
+    }
+
+    /*
+    *   Process D-line for parameter CITY
+     */
+    private void processForCity(String[] data){
+        if(data[1].equals(getParameter_2())){//For Cities
+            if(!userCityDetails.containsKey(data[2]))
+                userCityDetails.put(data[2], data[0]);
+        }
+    }
+
 
     /*
      * Adds each user to the map for retrieval
      */
-    private void addUserToMap(final String[] data){
-
-        if(processedUserData.containsKey(data[2]))
-            processedUserData.get(data[2]).addUserCity(data[1]);
-        else
-            processedUserData.put(data[2], User.addUserData(data[0].trim(), data[1], data[2]));
-
-    }
+//    private void addUserToMap(final String[] data){
+//
+//        if(processedUserData.containsKey(data[2]))
+//            processedUserData.get(data[2]).addUserCity(data[1]);
+//        else
+//            processedUserData.put(data[2], User.addUserData(data[0].trim(), data[1], data[2]));
+//
+//    }
 
     /*
      * Gets the output data based on the given parameters
      */
     void getOutputData(){
-        if(getParameter_1().equals(CITY)){
+//        if(getParameter_1().equals(CITY)){
+//
+//            processedUserData.values()
+//                    .forEach(user ->{
+//                        if(user.getUserCities().contains(getParameter_2()))
+//                            System.out.format("%s,%s%n", user.getUserName(), user.getUserId());
+//                    });
+//        }
+//
+//        if(getParameter_1().equals(ID)){
+//
+//            processedUserData.get(getParameter_2())
+//                    .getUserCities()
+//                    .forEach(System.out::println);
+//        }
 
-            processedUserData.values()
-                    .forEach(user ->{
-                        if(user.getUserCities().contains(getParameter_2()))
-                            System.out.format("%s,%s%n", user.getUserName(), user.getUserId());
-                    });
-        }
+        if(getParameter_1().equals(ID))
+            userIDDetails.forEach(System.out::println);
 
-        if(getParameter_1().equals(ID)){
+        if(getParameter_1().equals(CITY))
+            userCityDetails.forEach((k, v) -> System.out.format("%s,%s%n", v, k));
 
-            processedUserData.get(getParameter_2())
-                    .getUserCities()
-                    .forEach(System.out::println);
-        }
     }
 }

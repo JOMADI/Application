@@ -45,14 +45,15 @@ This executes the program
 
 ## OTHER
 
-The program is expected to be tested with gigabytes of datafile, an initial capacity of 50 was given to the HashMap<String, User>().
+The program stores data based on the parameter given, if parameter one is CITY only
+individuals who have been to this city will be stored. The same goes if parameter one is ID
 
 The Application.jar file can be found in the
 
 ```bash
 java -jar /Application/out/artifacts/Application_jar/Application.jar
 ```
-A 3.3GB file was used to test this program which completed execution at ~ 28s.
+A 3.3GB file was used to test this program which completed execution at ~ 24s.
 
 ## AUTHOR
 JO-AMADI VICTOR N.  
