@@ -26,8 +26,6 @@ public class DataFileProcessor {
 
     private static final int ID_LENGTH = 9;
 
-    private Map<String, User> processedUserData;
-
     private Set<String> userIDDetails; //Cities
 
     private Map<String, String> userCityDetails; //k - ID v- UserName
@@ -149,6 +147,7 @@ public class DataFileProcessor {
 
         if(format.equals(FORMAT_TWO)) {
             data = userLine.split(";");
+            data[0] = data[0].trim();
             data[1] = data[1].trim(); //remove whitespace in front and behind city name so it stands uniquely
             data[2] = new StringBuilder(data[2].trim()).deleteCharAt(ID_LENGTH - 1).toString(); //removing '-' in F2 ID's
         }
@@ -180,38 +179,10 @@ public class DataFileProcessor {
         }
     }
 
-
-    /*
-     * Adds each user to the map for retrieval
-     */
-//    private void addUserToMap(final String[] data){
-//
-//        if(processedUserData.containsKey(data[2]))
-//            processedUserData.get(data[2]).addUserCity(data[1]);
-//        else
-//            processedUserData.put(data[2], User.addUserData(data[0].trim(), data[1], data[2]));
-//
-//    }
-
     /*
      * Gets the output data based on the given parameters
      */
     void getOutputData(){
-//        if(getParameter_1().equals(CITY)){
-//
-//            processedUserData.values()
-//                    .forEach(user ->{
-//                        if(user.getUserCities().contains(getParameter_2()))
-//                            System.out.format("%s,%s%n", user.getUserName(), user.getUserId());
-//                    });
-//        }
-//
-//        if(getParameter_1().equals(ID)){
-//
-//            processedUserData.get(getParameter_2())
-//                    .getUserCities()
-//                    .forEach(System.out::println);
-//        }
 
         if(getParameter_1().equals(ID))
             userIDDetails.forEach(System.out::println);
