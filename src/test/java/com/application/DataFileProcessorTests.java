@@ -3,9 +3,12 @@ package com.application;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import static junit.framework.Assert.assertEquals;
 
+@RunWith(JUnit4.class)
 public class DataFileProcessorTests {
 
     private static final String TAG = "com.application.DataFileProcessorTests";

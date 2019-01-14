@@ -1,7 +1,6 @@
 package com.application;
 
 import com.sun.istack.internal.NotNull;
-import sun.rmi.runtime.Log;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -9,16 +8,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.logging.Level;
+import java.util.*;
 
 public class DataFileProcessor {
 
     /*
-    * @Author Victor Jo
+    * @author Victor Jo
      */
 
     private static final String TAG = "com.application.DataFileProcessor";
@@ -46,7 +41,7 @@ public class DataFileProcessor {
 
     private DataFileProcessor(@NotNull final String dataFile, @NotNull final String parameter_1, @NotNull final String parameter_2){
         userIDDetails = new TreeSet<>();
-        userCityDetails = new TreeMap<>();
+        userCityDetails = new HashMap<>();
         setParameter_1(parameter_1.toUpperCase());
 
         if(parameter_1.equals(ID) && parameter_2.length() != ID_LENGTH)
@@ -147,12 +142,10 @@ public class DataFileProcessor {
                     processData(userLine, format);
             }
         }catch (FileNotFoundException e){
-            Log.getLog("FileNotFoundException: " + e.getMessage(), " ", -1).log(Level.WARNING, TAG);
             System.err.println("File not found, Exiting program...");
             System.exit(0);
         }catch (IOException e){
             System.err.println("An error occurred processing the file, Exiting program...");
-            Log.getLog("IOException: " + e.getMessage(), " ", -1).log(Level.WARNING, TAG);
             System.exit(0);
         }
         return getDataFileProcessor();
@@ -169,10 +162,8 @@ public class DataFileProcessor {
             data = userLine.split(",");
 
         if(format.equals(FORMAT_TWO)) {
-            data = userLine.split(";");
-            data[0] = data[0].trim();
-            data[1] = data[1].trim(); //remove whitespace in front and behind city name so it stands uniquely
-            data[2] = new StringBuilder(data[2].trim()).deleteCharAt(ID_LENGTH - 1).toString(); //removing '-' in F2 ID's
+            data = userLine.split(" ; ");
+            data[2] = new StringBuilder(data[2]).deleteCharAt(ID_LENGTH - 1).toString(); //removing '-' in F2 ID's
         }
         data[0] = data[0].substring(2);//removing 'D ' in front of all data lines
 
@@ -188,7 +179,7 @@ public class DataFileProcessor {
     *  @param data an array containing an individual data(name,city,id)
     *  processing for search type ID
      */
-    private void processForID(String[] data){
+    private void processForID(final String[] data){
         if(data[2].equals(getParameter_2()))//For Id's
             userIDDetails.add(data[1]);
     }
@@ -197,7 +188,7 @@ public class DataFileProcessor {
     *  @param data an array containing an individual data(name,city,id)
     *  processing for search type CITY
      */
-    private void processForCity(String[] data){
+    private void processForCity(final String[] data){
         if(data[1].equals(getParameter_2())){//For Cities
             if(!userCityDetails.containsKey(data[2]))
                 userCityDetails.put(data[2], data[0]);
@@ -209,11 +200,15 @@ public class DataFileProcessor {
      */
     void getOutputData(){
 
-        if(getParameter_1().equals(ID))
-            userIDDetails.forEach(System.out::println);
+        if(getParameter_1().equals(ID)){
+            for(String city: userIDDetails)
+                System.out.println(city);
+        }
 
-        if(getParameter_1().equals(CITY))
-            userCityDetails.forEach((k, v) -> System.out.format("%s,%s%n", v, k));
+        if(getParameter_1().equals(CITY)){
+            for(Map.Entry<String, String> user : userCityDetails.entrySet())
+                System.out.printf("%s,%s%n", user.getValue(), user.getKey());
 
+        }
     }
 }
