@@ -1,4 +1,4 @@
-# JAVA TECHNICAL TEST
+# JAVA FILE PROCESSOR
 
 This is a simple file processing program.   
 The data is structured to a particular format, shown below;    
@@ -72,7 +72,7 @@ java -jar application.jar input.txt ID 54808168L
 The above must output an unordered unrepeated list of cities that Shelley Payne have been to.
  
 The input data as shown above was duplicated (as it is) to be a **_6.7GB_** large file.   
-The **_6.7GB_** file was used to test this program, which completed execution at ~ **70s** (at extreme situation ~ **_90s_**).  
+The **_6.7GB_** file was used to test this program, which completed execution at ~ **70s** (at extreme situations ~ **_90s_**).  
  
 _Execution time on Linux:  
 Linux Mint 19 x64    
@@ -108,7 +108,7 @@ This executes the program
  String parameter_1 = args[1];
  String parameter_2 = args[2];
 
- DataFileProcessor.setProcessingParameters(input, parameter_1, parameter_2)
+ com.application.DataFileProcessor.setProcessingParameters(input, parameter_1, parameter_2)
                     .processDataFile()
                     .getOutputData();
 ```
@@ -118,10 +118,10 @@ This executes the program
 The program stores data based on the parameter given, if parameter one is CITY only
 individuals who have been to this city will be stored. The same goes if parameter one is ID
 
-The Application.jar file can be found in the
+The com.application.Application.jar file can be found in the
 
 ```bash
-java -jar /Application/out/artifacts/Application_jar/Application.jar
+java -jar /com.application.Application/out/artifacts/Application_jar/com.application.Application.jar
 ```
 
 ## AUTHOR

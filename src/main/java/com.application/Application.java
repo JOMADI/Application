@@ -1,10 +1,13 @@
-package com.mytest;
+package com.application;
 
 import java.util.concurrent.TimeUnit;
 
 public class Application {
 
     public static void main(String... args){
+        /*
+         * @Author Victor Jo
+         */
 
         long startTime  = System.currentTimeMillis();
         System.out.printf("Start Time: %d MilliSeconds", startTime);

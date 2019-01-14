@@ -1,19 +1,27 @@
-package com.mytest;
+package com.application;
 
 import com.sun.istack.internal.NotNull;
+import sun.rmi.runtime.Log;
 
 import java.io.BufferedReader;
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.logging.Level;
 
 public class DataFileProcessor {
 
-    private static final String TAG = "com.mytest.DataFileProcessor";
+    /*
+    * @Author Victor Jo
+     */
+
+    private static final String TAG = "com.application.DataFileProcessor";
     private String dataFile;
     private String parameter_1; //This can be 'ID' or 'CITY'
     private String parameter_2; //This can be user's ID or CITY name
@@ -26,9 +34,9 @@ public class DataFileProcessor {
 
     private static final int ID_LENGTH = 9;
 
-    private Set<String> userIDDetails; //Cities
+    private Set<String> userIDDetails; //contains the cities a specified ID has been to
 
-    private Map<String, String> userCityDetails; //k - ID v- UserName
+    private Map<String, String> userCityDetails; //a map of k-ID v-Name of individuals who have visited a specified city
 
     private static DataFileProcessor dataFileProcessor;
 
@@ -37,7 +45,6 @@ public class DataFileProcessor {
     }
 
     private DataFileProcessor(@NotNull final String dataFile, @NotNull final String parameter_1, @NotNull final String parameter_2){
-       // processedUserData = new HashMap<>(50);
         userIDDetails = new TreeSet<>();
         userCityDetails = new TreeMap<>();
         setParameter_1(parameter_1.toUpperCase());
@@ -51,7 +58,9 @@ public class DataFileProcessor {
     }
 
     /*
-     *Sets the arguments for processing the file and producing the required output
+     * @param dataFile the dataFile for processing
+     * @param parameter_1 the search type (ID || CITY)
+     * @param parameter_2 the search key (UserId || CityName)
      */
     static DataFileProcessor setProcessingParameters(@NotNull final String dataFile, @NotNull final String parameter_1, @NotNull final String parameter_2){
         dataFileProcessor = new DataFileProcessor(dataFile, parameter_1, parameter_2);
@@ -60,60 +69,70 @@ public class DataFileProcessor {
     }
 
     /*
-     * Gets the dataFileProcessor instance to enable it call a public member method,
-     * giving it a functional programming style feel.
+     * @return dataFileProcessor the initialized instance of this class
      */
     private static DataFileProcessor getDataFileProcessor() {
         return dataFileProcessor;
     }
 
     /*
-     *gets the value for datafile which is to be processed
-     * although its private, this is left here incase it might be useful
+     *@return dataFile the dataFile name
      */
     private String getDataFile() {
         return dataFile;
     }
 
     /*
-     *Sets the value for input data file to be processed
+     *@param dataFile the datFile to set
      */
     private void setDataFile(final String dataFile) {
         this.dataFile = dataFile;
     }
 
     /*
-     *gets the value for parameter 1 which is the search key
-     * although its private, this is left here incase it might be useful
+     *@return parameter_1 the search type
      */
     private String getParameter_1() {
         return parameter_1;
     }
 
     /*
-     *Sets the value for parameter 1 which is the operation type
+     *@param parameter_1 Sets the value for parameter 1 which is the operation type
      */
     private void setParameter_1(final String parameter_1) {
         this.parameter_1 = parameter_1;
     }
 
     /*
-     *gets the value for parameter 2 which is the search key
-     * although its private, this is left here incase it might be useful
+     * @return parameter_2 the value of the search key
      */
     private String getParameter_2() {
         return parameter_2;
     }
 
     /*
-     *Sets the value for parameter 2 which is the search key
+     * @param parameter_2 the search Key to set
      */
     private void setParameter_2(final String parameter_2) {
         this.parameter_2 = parameter_2;
     }
 
+
     /*
-     *processes the data file line by line based on the last seen format line
+    *   @return userIDDetails the size of the number of cities ID has visited.
+     */
+    int citiesIdVisited_Size(){ //i prayed to God to reveal to me in dream a better name for this, but i had a dream about peter from family guy instead.
+        return userIDDetails.size();
+    }
+    /*
+    * @return userCityDetails the size of the number of individuals who have been to specified city
+     */
+    int idVisitedCities_Size(){// Yeah, umm this too, sorry about this....
+        return userCityDetails.size();
+    }
+
+    /*
+     *@return dataFileProcessor the instance of the current class handling processing
      */
     DataFileProcessor processDataFile(){
 
@@ -127,17 +146,21 @@ public class DataFileProcessor {
                 if(!userLine.equals(format))
                     processData(userLine, format);
             }
+        }catch (FileNotFoundException e){
+            Log.getLog("FileNotFoundException: " + e.getMessage(), " ", -1).log(Level.WARNING, TAG);
+            System.err.println("File not found, Exiting program...");
+            System.exit(0);
         }catch (IOException e){
-            //e.printStackTrace();
-            System.err.println("An Error occurred processing the file, Exiting Program...");
+            System.err.println("An error occurred processing the file, Exiting program...");
+            Log.getLog("IOException: " + e.getMessage(), " ", -1).log(Level.WARNING, TAG);
             System.exit(0);
         }
         return getDataFileProcessor();
     }
 
-
     /*
-     * processes the data for format one (F1) and format two (F2)
+     * @param userLine each line of data in the dataFile
+     * @param format the previously seen format type
      */
     private void processData(final String userLine, final String format) {
         String[] data = new String[0];
@@ -162,7 +185,8 @@ public class DataFileProcessor {
     }
 
     /*
-    *   Process D -Line for parameter ID
+    *  @param data an array containing an individual data(name,city,id)
+    *  processing for search type ID
      */
     private void processForID(String[] data){
         if(data[2].equals(getParameter_2()))//For Id's
@@ -170,7 +194,8 @@ public class DataFileProcessor {
     }
 
     /*
-    *   Process D-line for parameter CITY
+    *  @param data an array containing an individual data(name,city,id)
+    *  processing for search type CITY
      */
     private void processForCity(String[] data){
         if(data[1].equals(getParameter_2())){//For Cities
