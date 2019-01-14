@@ -41,7 +41,7 @@ public class DataFileProcessor {
 
     private DataFileProcessor(@NotNull final String dataFile, @NotNull final String parameter_1, @NotNull final String parameter_2){
         userIDDetails = new TreeSet<>();
-        userCityDetails = new HashMap<>();
+        userCityDetails = new TreeMap<>();
         setParameter_1(parameter_1.toUpperCase());
 
         if(parameter_1.equals(ID) && parameter_2.length() != ID_LENGTH)
@@ -200,15 +200,10 @@ public class DataFileProcessor {
      */
     void getOutputData(){
 
-        if(getParameter_1().equals(ID)){
-            for(String city: userIDDetails)
-                System.out.println(city);
-        }
+        if(getParameter_1().equals(ID))
+            userIDDetails.forEach(System.out::println);
 
-        if(getParameter_1().equals(CITY)){
-            for(Map.Entry<String, String> user : userCityDetails.entrySet())
-                System.out.printf("%s,%s%n", user.getValue(), user.getKey());
-
-        }
+        if(getParameter_1().equals(CITY))
+            userCityDetails.forEach((key, value) -> System.out.printf("%s,%s%n", value, key));
     }
 }
